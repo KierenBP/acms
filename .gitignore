@@ -87,3 +87,6 @@ Temporary Items
 .apdisk
 
 .vscode
+
+# Only config example is sent to repo. NOT production configs
+config.json
