@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+// eslint-disable-next-line no-use-before-define
 const config = require('./../../config');
 
 
