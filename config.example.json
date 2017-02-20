@@ -3,6 +3,10 @@
 // DO NOT SET PRODUCTION VARIABLES IN THIS CONFIG. IT WILL BE OVERWRITTEN.
 {
     "appName": "ACMS",
+    "companyDomain": "ashleycho.com",
+    "google": {
+        "apiClientID": "xxxxxxxxxxxxxxxx.apps.googleusercontent.com"
+    },
     "mysqlConnection": {
         "host": "",
         "port": 0,
