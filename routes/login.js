@@ -128,7 +128,7 @@ router.post('/tokenrequest', (req, res) => {
                   profilepicture: profilePicture,
                 },
               }).then(() => {
-                generateJWTToken(value[0].id).then((s) => {
+                generateJWTToken(value[0].id).then((tokenJSON) => {
                   // return jwtToken
                   res.json({
                     token: tokenJSON.token,

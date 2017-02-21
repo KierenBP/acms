@@ -38,6 +38,30 @@ function checkToken(jwtToken) {
   });
 }
 
+function checkHeaders(req, res, next) {
+  const authHeader = req.get('Token');
+  if (authHeader !== undefined) {
+    checkToken(authHeader).then(() => {
+      next();
+    }).catch((err) => {
+      res.status(400).json({
+        status: 'Error',
+        message: 'JWT Error',
+        logout: true,
+        data: err,
+      });
+    });
+  } else {
+    res.status(400).json({
+      status: 'Error',
+      message: 'Token header not supplied',
+      logout: true,
+      data: {},
+    });
+  }
+}
+
 module.exports = {
   checkToken,
+  checkHeaders,
 };
