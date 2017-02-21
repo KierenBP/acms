@@ -27,7 +27,7 @@ function checkToken(jwtToken) {
         }).then((value) => {
           if (value.length > 0) {
             // Token found!
-            resolve();
+            resolve(decoded.userId);
           } else {
             // Token Doesn't exist
             reject();
@@ -41,7 +41,10 @@ function checkToken(jwtToken) {
 function checkHeaders(req, res, next) {
   const authHeader = req.get('Token');
   if (authHeader !== undefined) {
-    checkToken(authHeader).then(() => {
+    checkToken(authHeader).then((userId) => {
+      res.locals.user = {  // eslint-disable-line no-param-reassign
+        userId,
+      };
       next();
     }).catch((err) => {
       res.status(400).json({

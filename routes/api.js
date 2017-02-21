@@ -13,7 +13,9 @@ router.get('/', (req, res) => {
     info: {
       version: tools.version.getVersionNumber(),
       latestCommit: tools.version.getCommitSHA(),
+
     },
+    user: res.locals.user,
   });
 });
 
