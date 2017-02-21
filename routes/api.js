@@ -5,6 +5,7 @@ const tools = require('./../helpers/tools');
 const router = express.Router();
 
 // Auth check
+// This must be before any router requests as they will NOT be authenticated otherwise
 router.use(auth.checkHeaders);
 
 
