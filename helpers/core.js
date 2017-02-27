@@ -15,7 +15,7 @@ const core = {
     returnError: (res, status, data, auth) => {
       res.status(status);
       res.set({
-        Auth: auth,
+        Auth: auth.toLowercase(),
         Version: version,
         'X-Powered-By': 'A lot of crying', // ☕️
       });
