@@ -8,8 +8,8 @@ const core = require('./../helpers/core');
 const googleAPIClientID = config.google.apiClientID;
 const secretTokenKey = config.secretTokenKey;
 
-const auth = new GoogleAuth();
-const client = new auth.OAuth2(googleAPIClientID, '', '');
+const googleAuth = new GoogleAuth();
+const client = new googleAuth.OAuth2(googleAPIClientID, '', '');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
@@ -56,20 +56,61 @@ function generateJWTToken(userId) {
   });
 }
 
+function createUser(res, userid, googleId, firstName, lastName, email, profilePicture) {
+  // Create User
+  db.insert({
+    table: 'user',
+    values: {
+      googleid: googleId,
+      firstname: firstName,
+      lastname: lastName,
+      email,
+      profilepicture: profilePicture,
+    },
+  }).then(() => {
+    generateJWTToken(userid).then((tokenJSON) => {
+      // return jwtToken
+      core.api.returnJSON(res, {
+        token: tokenJSON.token,
+        expiresIn: tokenJSON.expires,
+      });
+    }).catch(tokenError => core.api.returnError(res, 500, tokenError, 'logout'));
+  });
+}
+
+function updateUser(res, userid, googleId, firstName, lastName, email, profilePicture) {
+  // Update User infomation
+  db.update({
+    table: 'user',
+    values: {
+      firstname: firstName,
+      lastname: lastName,
+      email,
+      profilepicture: profilePicture,
+    },
+    where: {
+      googleid: googleId,
+    },
+  }).then(() => {
+      // Generate JWT Token
+    generateJWTToken(userid).then((tokenJSON) => {
+      // return jwtToken
+      core.api.returnJSON(res, {
+        token: tokenJSON.token,
+        expiresIn: tokenJSON.expires,
+      });
+    }).catch(tokenError => core.api.returnError(res, 500, tokenError, 'logout'));
+  });
+}
+
+// ROUTES
 // Check google token
 router.post('/tokenrequest', (req, res) => {
   if (typeof req.body.googleToken !== 'undefined') {
     client.verifyIdToken(req.body.googleToken, googleAPIClientID, (err, login) => {
       if (err !== null) {
         // Error verifying token
-        res.status(400).json({
-          status: 'Error',
-          message: 'Verifying token failed',
-          logout: true,
-          data: {
-            message: err,
-          },
-        });
+        core.api.returnError(res, 500, err, 'logout');
       } else {
         const payload = login.getPayload();
         const domain = payload.hd; // If domain matches company Gsuite domain
@@ -80,6 +121,7 @@ router.post('/tokenrequest', (req, res) => {
           const lastName = payload.family_name; // Store in database for later use
           const email = payload.email; // Store in database for later use
           const profilePicture = payload.picture; // Store in database for later use
+          // See if users google ID exists in database already
           db.fetch({
             select: ['*'],
             table: 'user',
@@ -90,73 +132,20 @@ router.post('/tokenrequest', (req, res) => {
           }).then((value) => {
             if (value.length > 0) {
               // Existing user
-              // Update User infomation
-              db.update({
-                table: 'user',
-                values: {
-                  firstname: firstName,
-                  lastname: lastName,
-                  email,
-                  profilepicture: profilePicture,
-                },
-                where: {
-                  googleid: googleId,
-                },
-              }).then(() => {
-                // Generate JWT Token
-                generateJWTToken(value[0].id).then((tokenJSON) => {
-                  // return jwtToken
-                  res.json({
-                    token: tokenJSON.token,
-                    expiresIn: tokenJSON.expires,
-                  });
-                }).catch(tokenError => res.status(400).json({
-                  status: 'Error',
-                  message: 'Error during token generation',
-                  logout: true,
-                  data: tokenError,
-                }));
-              });
+              updateUser(res, value[0].id, googleId, firstName, lastName, email, profilePicture);
             } else {
               // create new user, new token
-              db.insert({
-                table: 'user',
-                values: {
-                  googleid: googleId,
-                  firstname: firstName,
-                  lastname: lastName,
-                  email,
-                  profilepicture: profilePicture,
-                },
-              }).then(() => {
-                generateJWTToken(value[0].id).then((tokenJSON) => {
-                  // return jwtToken
-                  res.json({
-                    token: tokenJSON.token,
-                    expiresIn: tokenJSON.expires,
-                  });
-                }).catch(tokenError => res.status(400).json({
-                  status: 'Error',
-                  message: 'Error during token generation',
-                  logout: true,
-                  data: tokenError,
-                }));
-              });
+              createUser(res, value[0].id, googleId, firstName, lastName, email, profilePicture);
             }
           });
         } else {
-          // Handle error
-          res.status(400).json(core.api.returnError());
+          // Handle error for incorrect domain
+          core.api.returnError(res, 401, 'Domain Incorrect', 'logout');
         }
       }
     });
   } else {
-    res.status(400).json({
-      status: 'Error',
-      message: 'Supply token',
-      logout: true,
-      data: {},
-    });
+    core.api.returnError(res, 401, 'Supply Token', 'logout');
   }
 });
 
