@@ -3,6 +3,7 @@ const GoogleAuth = require('google-auth-library');
 // eslint-disable-next-line
 const config = require('./../config');
 const db = require('./../helpers/db/index');
+const core = require('./../helpers/core');
 
 const googleAPIClientID = config.google.apiClientID;
 const secretTokenKey = config.secretTokenKey;
@@ -145,9 +146,7 @@ router.post('/tokenrequest', (req, res) => {
           });
         } else {
           // Handle error
-          res.status(400).json({
-            failed: true,
-          });
+          res.status(400).json(core.api.returnError());
         }
       }
     });

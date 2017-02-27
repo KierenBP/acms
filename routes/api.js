@@ -1,6 +1,7 @@
 const express = require('express');
 const auth = require('./../helpers/auth');
 const tools = require('./../helpers/tools');
+const core = require('./../helpers/core');
 
 const router = express.Router();
 
@@ -10,11 +11,10 @@ router.use(auth.checkHeaders);
 
 
 router.get('/', (req, res) => {
-  res.json({
+  core.api.returnJSON(res, {
     info: {
       version: tools.version.getVersionNumber(),
       latestCommit: tools.version.getCommitSHA(),
-
     },
     user: res.locals.user,
   });
