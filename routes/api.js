@@ -11,14 +11,13 @@ router.use(auth.checkHeaders);
 
 
 router.get('/', (req, res) => {
-  res.json(core.api.returnJSON({
+  core.api.returnJSON(res, {
     info: {
       version: tools.version.getVersionNumber(),
       latestCommit: tools.version.getCommitSHA(),
-
     },
     user: res.locals.user,
-  }));
+  });
 });
 
 module.exports = router;

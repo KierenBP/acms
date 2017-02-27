@@ -4,20 +4,23 @@ const version = tools.version.getVersionNumber();
 
 const core = {
   api: {
-    returnJSON: data => ({
-      status: 200,
-      version,
-      message: null,
-      auth: 'allow',
-      data,
-    }),
-    returnError: (status, message, auth) => ({
-      status: 200,
-      version,
-      message,
-      auth,
-      data: null,
-    }),
+    returnJSON: (res, data) => {
+      res.set({
+        Auth: 'allow',
+        Version: version,
+        'X-Powered-By': 'A lot of coffee', // ☕️
+      });
+      res.json(data);
+    },
+    returnError: (res, status, data, auth) => {
+      res.status(status);
+      res.set({
+        Auth: auth,
+        Version: version,
+        'X-Powered-By': 'A lot of crying', // ☕️
+      });
+      res.json(data);
+    },
   },
 };
 
