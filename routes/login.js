@@ -1,6 +1,8 @@
 const express = require('express');
 const GoogleAuth = require('google-auth-library');
 const moment = require('moment');
+const jwt = require('jsonwebtoken');
+
 // eslint-disable-next-line
 const config = require('./../config');
 const db = require('./../helpers/db/index');
@@ -8,10 +10,8 @@ const core = require('./../helpers/core');
 
 const googleAPIClientID = config.google.apiClientID;
 const secretTokenKey = config.secretTokenKey;
-
 const googleAuth = new GoogleAuth();
 const client = new googleAuth.OAuth2(googleAPIClientID, '', '');
-const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
