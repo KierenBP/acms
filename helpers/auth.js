@@ -31,7 +31,7 @@ function checkToken(jwtToken) {
             resolve(decoded.userId);
           } else {
             // Token Doesn't exist
-            reject();
+            reject('Please login again');
           }
         }).catch(error => reject(error));
       }
