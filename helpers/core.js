@@ -12,14 +12,17 @@ const core = {
       });
       res.json(data);
     },
-    returnError: (res, status, data, auth) => {
+    returnError: (res, status, error, auth) => {
+      console.log(error);
       res.status(status);
       res.set({
-        Auth: auth.toLowercase(),
+        Auth: auth.toString().toLowerCase(),
         Version: version,
-        'X-Powered-By': 'A lot of crying', // ☕️
+        'X-Powered-By': 'A lot of crying', // 😭
       });
-      res.json(data);
+      res.json({
+        error,
+      });
     },
   },
 };

@@ -1,5 +1,6 @@
 const express = require('express');
 const GoogleAuth = require('google-auth-library');
+const moment = require('moment');
 // eslint-disable-next-line
 const config = require('./../config');
 const db = require('./../helpers/db/index');
@@ -25,13 +26,14 @@ function generateToken() {
 function generateJWTToken(userId) {
   return new Promise((resolve, reject) => {
     const token = generateToken();
-    const expiresIn = Math.floor(Date.now() / 1000) + 86400;
+    const date = moment().startOf('week').add(7, 'days');
     const payload = {
       token,
       userId,
+      exp: date.unix(),
     };
     const options = {
-      expiresIn,
+      algorithm: 'HS256',
     };
     jwt.sign(payload, secretTokenKey, options, (err, jwtToken) => {
       if (err) {
@@ -42,12 +44,13 @@ function generateJWTToken(userId) {
           values: {
             token,
             userid: userId,
-            expires: expiresIn,
+            expires: date.format('YYYY-MM-DD HH:mm:ss'),
           },
         }).then(() => {
           resolve({
             token: jwtToken,
-            expires: expiresIn });
+            expires: date.toDate(),
+          });
         }).catch((error) => {
           reject(error);
         });
@@ -110,7 +113,7 @@ router.post('/tokenrequest', (req, res) => {
     client.verifyIdToken(req.body.googleToken, googleAPIClientID, (err, login) => {
       if (err !== null) {
         // Error verifying token
-        core.api.returnError(res, 500, err, 'logout');
+        core.api.returnError(res, 500, 'Error in validating google token', 'logout');
       } else {
         const payload = login.getPayload();
         const domain = payload.hd; // If domain matches company Gsuite domain

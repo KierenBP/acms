@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 // eslint-disable-next-line
 const config = require('./../config');
 const db = require('./db/index');
+const core = require('./core');
 
 const secretTokenKey = config.secretTokenKey;
 
@@ -47,20 +48,10 @@ function checkHeaders(req, res, next) {
       };
       next();
     }).catch((err) => {
-      res.status(400).json({
-        status: 'Error',
-        message: 'JWT Error',
-        logout: true,
-        data: err,
-      });
+      core.api.returnError(res, 500, err, 'logout');
     });
   } else {
-    res.status(400).json({
-      status: 'Error',
-      message: 'Token header not supplied',
-      logout: true,
-      data: {},
-    });
+    core.api.returnError(res, 401, 'Token header not supplied', 'logout');
   }
 }
 
