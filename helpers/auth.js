@@ -40,7 +40,7 @@ function checkToken(jwtToken) {
 }
 
 function checkHeaders(req, res, next) {
-  const authHeader = req.get('Token');
+  const authHeader = req.get('Authentication');
   if (authHeader !== undefined) {
     checkToken(authHeader).then((userId) => {
       res.locals.user = {  // eslint-disable-line no-param-reassign
@@ -48,7 +48,7 @@ function checkHeaders(req, res, next) {
       };
       next();
     }).catch((err) => {
-      core.api.returnError(res, 500, err, 'logout');
+      core.api.returnError(res, 401, err, 'logout');
     });
   } else {
     core.api.returnError(res, 401, 'Token header not supplied', 'logout');
