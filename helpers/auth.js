@@ -39,8 +39,18 @@ function checkToken(jwtToken) {
   });
 }
 
+// Extract token from Bearer authentication header
+function extractToken(bearer) {
+  const bearerArray = bearer.split(' ');
+  if (bearerArray[0] === 'Bearer' && bearerArray.length <= 2) {
+    return bearerArray[1];
+  }
+  return false;
+}
+
+
 function checkHeaders(req, res, next) {
-  const authHeader = req.get('Authentication');
+  const authHeader = req.get('Token');
   if (authHeader !== undefined) {
     checkToken(authHeader).then((userId) => {
       res.locals.user = {  // eslint-disable-line no-param-reassign
@@ -54,6 +64,7 @@ function checkHeaders(req, res, next) {
     core.api.returnError(res, 401, 'Token header not supplied', 'logout');
   }
 }
+
 
 module.exports = {
   checkToken,
