@@ -9,6 +9,7 @@ const core = {
         Auth: 'allow',
         Version: version,
         'X-Powered-By': 'A lot of coffee', // ☕️
+        'Access-Control-Allow-Origin': 'http://kieren.dev:8080',
       });
       res.json(data);
     },
@@ -18,6 +19,7 @@ const core = {
         Auth: auth.toString().toLowerCase(),
         Version: version,
         'X-Powered-By': 'A lot of crying', // 😭
+        'Access-Control-Allow-Origin': 'http://kieren.dev:8080',
       });
       res.json({
         error,

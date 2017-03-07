@@ -29,6 +29,12 @@ app.use(bodyParser.urlencoded({
 // Disable unnecessary etag HTTP header
 app.disable('etag');
 
+app.all('/*', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://kieren.dev:8080');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next(); // http://expressjs.com/guide.html#passing-route control
+});
+
 // View static files in public folder
 app.use(express.static(path.join(__dirname, 'public')));
 // Checks if User is Loggined in and is not on login page or google auth

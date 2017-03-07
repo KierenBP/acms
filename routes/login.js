@@ -76,6 +76,10 @@ function createUser(res, userid, googleId, firstName, lastName, email, profilePi
       core.api.returnJSON(res, {
         token: tokenJSON.token,
         expiresIn: tokenJSON.expires,
+        firstName,
+        lastName,
+        email,
+        profilePicture,
       });
     }).catch(tokenError => core.api.returnError(res, 500, tokenError, 'logout'));
   });
@@ -101,6 +105,10 @@ function updateUser(res, userid, googleId, firstName, lastName, email, profilePi
       core.api.returnJSON(res, {
         token: tokenJSON.token,
         expiresIn: tokenJSON.expires,
+        firstName,
+        lastName,
+        email,
+        profilePicture,
       });
     }).catch(tokenError => core.api.returnError(res, 500, tokenError, 'logout'));
   });

@@ -41,16 +41,18 @@ function checkToken(jwtToken) {
 
 // Extract token from Bearer authentication header
 function extractToken(bearer) {
-  const bearerArray = bearer.split(' ');
-  if (bearerArray[0] === 'Bearer' && bearerArray.length <= 2) {
-    return bearerArray[1];
+  if (typeof bearer === 'string') {
+    const bearerArray = bearer.split(' ');
+    if (bearerArray[0] === 'Bearer' && bearerArray.length <= 2) {
+      return bearerArray[1];
+    }
   }
   return false;
 }
 
 
 function checkHeaders(req, res, next) {
-  const authHeader = req.get('Token');
+  const authHeader = extractToken(req.get('Authorization'));
   if (authHeader !== undefined) {
     checkToken(authHeader).then((userId) => {
       res.locals.user = {  // eslint-disable-line no-param-reassign
