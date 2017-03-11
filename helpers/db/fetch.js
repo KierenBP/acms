@@ -45,7 +45,7 @@ function fetchFromTable({
   }
     // Check if limit is defined and then add it to the query
   if (typeof limit !== 'undefined') {
-    query += ` LIMIT ${connection.escape(limit)}`;
+    query += ` LIMIT ${connection.escape(limit.amount)} OFFSET ${connection.escape(limit.offset)}`;
   }
   return new Promise((resolve, reject) => {
     connection.query({

@@ -3,6 +3,9 @@ const auth = require('./../helpers/auth');
 const tools = require('./../helpers/tools');
 const core = require('./../helpers/core');
 
+
+const clients = require('./clients');
+
 const router = express.Router();
 
 // Auth check
@@ -19,5 +22,8 @@ router.get('/', (req, res) => {
     user: res.locals.user,
   });
 });
+
+router.use('/clients', clients);
+
 
 module.exports = router;
