@@ -12,7 +12,7 @@ cache:
   - node_modules/
 
 before_script:
-  - npm install -g yarn
+  - npm install
 
 
 stages:
@@ -23,5 +23,4 @@ stages:
 eslint:
   stage: check
   script:
-  - yarn
-  - yarn run linter
+  - npm run linter
