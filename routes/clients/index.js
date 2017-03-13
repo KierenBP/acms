@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
   const minAmount = req.query.page || 1;
   // Amount of clients per page
   const maxAmount = 50;
-   // Work out amount
+  // Work out amount
   const amount = (minAmount - 1) * maxAmount;
   let clients;
   db.fetch({

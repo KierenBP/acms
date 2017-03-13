@@ -16,3 +16,58 @@ CREATE TABLE `session` (
   KEY `userid` (`userid`),
   CONSTRAINT `session_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `client` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(180) NOT NULL DEFAULT '',
+  `phone` varchar(40) DEFAULT '',
+  `fax` varchar(40) DEFAULT '',
+  `mobile` varchar(40) DEFAULT '',
+  `website` varchar(2083) DEFAULT NULL,
+  `accountnumber` varchar(36) DEFAULT NULL,
+  `xeroid` varchar(40) DEFAULT NULL,
+  `lastmodify` datetime DEFAULT NULL,
+  `xerodate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `address` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `street` varchar(100) NOT NULL DEFAULT '',
+  `suburb` varchar(100) DEFAULT '',
+  `town` varchar(100) DEFAULT '',
+  `postcode` varchar(10) DEFAULT '',
+  `country` varchar(32) DEFAULT '',
+  `addresstype` varchar(8) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `contact` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(80) NOT NULL DEFAULT '',
+  `lastname` varchar(80) DEFAULT '',
+  `email` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `client_contact` (
+  `clientid` int(11) unsigned NOT NULL,
+  `contactid` int(11) unsigned NOT NULL,
+  `sequence` int(11) DEFAULT NULL,
+  `emailinclude` bit(1) DEFAULT b'1',
+  PRIMARY KEY (`clientid`,`contactid`),
+  KEY `clientid` (`clientid`),
+  KEY `contactid` (`contactid`),
+  CONSTRAINT `client_contact_ibfk_1` FOREIGN KEY (`clientid`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `client_contact_ibfk_2` FOREIGN KEY (`contactid`) REFERENCES `contact` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `client_address` (
+  `clientid` int(11) unsigned DEFAULT NULL,
+  `addressid` int(11) unsigned DEFAULT NULL,
+  `sequence` int(11) DEFAULT NULL,
+  KEY `addressid` (`addressid`),
+  KEY `clientid` (`clientid`),
+  CONSTRAINT `client_address_ibfk_1` FOREIGN KEY (`addressid`) REFERENCES `address` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `client_address_ibfk_2` FOREIGN KEY (`clientid`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
