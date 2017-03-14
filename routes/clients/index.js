@@ -1,6 +1,7 @@
 const express = require('express');
 const core = require('./../../helpers/core');
 const db = require('./../../helpers/db');
+const view = require('./view');
 
 const router = express.Router();
 
@@ -35,5 +36,7 @@ router.get('/', (req, res) => {
     core.api.returnError(res, 500, err, 'allow');
   });
 });
+
+router.get('/view', view);
 
 module.exports = router;

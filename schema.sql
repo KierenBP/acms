@@ -71,3 +71,28 @@ CREATE TABLE `client_address` (
   CONSTRAINT `client_address_ibfk_1` FOREIGN KEY (`addressid`) REFERENCES `address` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `client_address_ibfk_2` FOREIGN KEY (`clientid`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE VIEW `contactview`
+AS SELECT
+   `client`.`id` AS `clientid`,
+   `contact`.`id` AS `contactid`,
+   `contact`.`firstname` AS `firstname`,
+   `contact`.`email` AS `email`,
+   `contact`.`lastname` AS `lastname`,
+   `client_contact`.`sequence` AS `sequence`,
+   `client_contact`.`emailinclude` AS `emailinclude`
+FROM ((`client` join `client_contact` on((`client_contact`.`clientid` = `client`.`id`))) left join `contact` on((`client_contact`.`contactid` = `contact`.`id`)));
+
+CREATE VIEW `addressview`
+AS SELECT
+   `client`.`id` AS `clientid`,
+   `address`.`id` AS `addressid`,
+   `address`.`street` AS `street`,
+   `address`.`suburb` AS `suburb`,
+   `address`.`town` AS `town`,
+   `address`.`postcode` AS `postcode`,
+   `address`.`country` AS `country`,
+   `address`.`addresstype` AS `addresstype`,
+   `client_address`.`sequence` AS `sequence`
+FROM ((`client` join `client_address` on((`client`.`id` = `client_address`.`clientid`))) left join `address` on((`client_address`.`addressid` = `address`.`id`)));
+
