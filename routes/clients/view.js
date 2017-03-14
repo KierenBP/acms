@@ -3,7 +3,7 @@ const db = require('./../../helpers/db');
 
 function viewClients(req, res) {
   // Client ID from request param `id`
-  const clientId = req.query.id;
+  const clientId = req.params.id;
 
   // Global variables for client, client addresses and client contacts
   let client;
@@ -22,10 +22,14 @@ function viewClients(req, res) {
   })
     .then(() => db.fetch({
       table: 'contactview',
-      select: ['*'],
+      select: ['contactid', 'firstname', 'lastname', 'email', 'sequence', 'emailinclude'],
       where: [{
         col: 'clientid',
         value: clientId,
+      }],
+      orderby: [{
+        col: 'sequence',
+        order: 'asc',
       }],
     }))
     .then((clientContacts) => {
@@ -33,7 +37,7 @@ function viewClients(req, res) {
     })
     .then(() => db.fetch({
       table: 'addressview',
-      select: ['*'],
+      select: ['addressid', 'street', 'suburb', 'town', 'postcode', 'country', 'addresstype', 'sequence'],
       where: [{
         col: 'clientid',
         value: clientId,

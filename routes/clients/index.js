@@ -1,9 +1,13 @@
 const express = require('express');
 const core = require('./../../helpers/core');
 const db = require('./../../helpers/db');
-const view = require('./view');
+const viewClient = require('./view');
+const createClient = require('./create');
 
 const router = express.Router();
+
+// Create Client
+router.put('/', createClient);
 
 
 router.get('/', (req, res) => {
@@ -37,6 +41,14 @@ router.get('/', (req, res) => {
   });
 });
 
-router.get('/view', view);
+// GET Client and their address and contacts by id in URL
+router.get('/:id', viewClient);
+
+// POST (Update) Client and their address and contacts by id in URL
+// router.post('/:id', updateClient);
+
+// DELETE Client and their address and contacts by id in URL
+// router.delete('/:id', deleteClient);
+
 
 module.exports = router;
