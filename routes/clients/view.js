@@ -1,7 +1,7 @@
 const core = require('./../../helpers/core');
 const db = require('./../../helpers/db');
 
-function viewClients(req, res) {
+function viewClient(req, res) {
   // Client ID from request param `id`
   const clientId = req.params.id;
 
@@ -63,4 +63,4 @@ function viewClients(req, res) {
     });
 }
 
-module.exports = viewClients;
+module.exports = viewClient;

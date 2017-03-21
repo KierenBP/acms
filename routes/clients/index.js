@@ -20,11 +20,22 @@ router.get('/', (req, res) => {
   let clients;
   db.fetch({
     table: 'client',
-    select: ['id', 'name'],
+    select: ['client.id', 'name', 'phone', 'street', 'suburb', 'town', 'postcode', 'country'],
     limit: {
       offset: amount,
       amount: maxAmount,
     },
+    join: [{
+      type: 'LEFT JOIN',
+      table: 'firstaddressview',
+      col: 'client.id',
+      value: 'clientid',
+    }, {
+      type: 'LEFT JOIN',
+      table: 'address',
+      col: 'addressid',
+      value: 'address.id',
+    }],
   }).then((returnedClients) => {
     clients = returnedClients;
   }).then(() => db.fetch({
@@ -33,6 +44,7 @@ router.get('/', (req, res) => {
   })).then((countedClients) => {
     core.api.returnJSON(res, {
       pages: parseInt(Math.ceil(countedClients[0]['count(`id`)'] / maxAmount), 10),
+      total: parseInt(countedClients[0]['count(`id`)'], 10),
       data: clients,
     });
   })
