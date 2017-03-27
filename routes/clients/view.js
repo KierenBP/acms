@@ -1,6 +1,7 @@
 const core = require('./../../helpers/core');
 const db = require('./../../helpers/db');
 
+// View single client
 function viewClient(req, res) {
   // Client ID from request param `id`
   const clientId = req.params.id;

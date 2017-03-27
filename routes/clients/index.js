@@ -9,7 +9,7 @@ const router = express.Router();
 // Create Client
 router.put('/', createClient);
 
-
+// Index Clients
 router.get('/', (req, res) => {
   // Amount of clients per page
   const minAmount = req.query.page || 1;
