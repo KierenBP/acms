@@ -18,7 +18,7 @@ router.use('/bingbg', (req, res) => {
 
 // Auth check
 // This must be before any router requests as they will NOT be authenticated otherwise
-// router.use(auth.checkHeaders);
+router.use(auth.checkHeaders);
 
 
 router.get('/', (req, res) => {
