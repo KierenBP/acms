@@ -14,6 +14,7 @@ const core = {
       res.json(data);
     },
     returnError: (res, status, error, auth) => {
+      console.log(error);
       res.status(status);
       res.set({
         Auth: auth.toString().toLowerCase(),
