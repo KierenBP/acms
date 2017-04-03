@@ -6,7 +6,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node bin/www",
-    "linter": "node_modules/eslint/bin/eslint.js ."
+    "linter": "node_modules/eslint/bin/eslint.js .",
+    "build:watch": "node_modules/webpack/bin/webpack.js  --progress --colors -p -d -w",
+    "build": "node_modules/webpack/bin/webpack.js  --progress --colors -p"
   },
   "repository": "https://gitlab.com/ashleycho/acms-server",
   "author": "Kieren BP",
@@ -17,15 +19,25 @@
     "express-session": "^1.15.1",
     "google-auth-library": "^0.10.0",
     "jsonwebtoken": "^7.3.0",
+    "material-ui": "^0.17.1",
     "moment": "^2.17.1",
     "morgan": "^1.8.1",
     "mysql": "^2.13.0",
+    "react-router-dom": "^4.0.0",
     "request": "^2.79.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.3.2",
+    "babel-preset-react": "^6.23.0",
     "eslint": "^3.15.0",
     "eslint-config-airbnb-base": "^11.1.0",
     "eslint-plugin-import": "^2.2.0",
-    "session": "^0.1.0"
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "session": "^0.1.0",
+    "webpack": "^2.3.3"
   }
 }

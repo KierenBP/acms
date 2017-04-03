@@ -40,10 +40,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Checks if User is Loggined in and is not on login page or google auth
 
 // Routes
-app.use('/', index);
 app.use('/auth', login);
 app.use('/api', api);
-
+app.use('/', index);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');
