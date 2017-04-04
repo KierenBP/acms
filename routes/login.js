@@ -156,7 +156,7 @@ router.post('/tokenrequest', (req, res) => {
       }
     });
   } else {
-    core.api.returnError(res, 401, 'Supply Token', 'logout');
+    core.api.returnError(res, 400, 'Supply Token', 'logout');
   }
 });
 
