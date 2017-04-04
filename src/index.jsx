@@ -12,6 +12,10 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import GoogleLogin from 'react-google-login';
 
 
+import Clients from './clients/view.jsx';
+
+
+
 
 injectTapEventPlugin();
 
@@ -117,13 +121,14 @@ export default class App extends React.Component {
  render() {
    return(
     <Router>
-      <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+      {/*<MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>*/}
+      <MuiThemeProvider>
         <div>
           <AppDrawer/>
           <Switch>
             <Route path="/login" component={Login}/>
             <PrivateRoute exact path="/" component={Dashboard}/>
-            <PrivateRoute path="/about" component={About}/>
+            <PrivateRoute path="/clients" component={Clients}/>
             <PrivateRoute component={NotFound}/>
           </Switch>
         </div>
