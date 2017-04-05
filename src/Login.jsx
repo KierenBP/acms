@@ -2,7 +2,9 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import GoogleLogin from 'react-google-login';
 import Snackbar from 'material-ui/Snackbar';
-
+import Avatar from 'material-ui/Avatar';
+import {companyDomain} from './../config.json';
+import {google} from './../config.json';
 
 
 const requestAuth = (googleRes) => {
@@ -26,7 +28,7 @@ const requestAuth = (googleRes) => {
   }).then(() => {
     location.reload()
   }).catch((err) => {
-    alert(err)
+    console.log('Error: ', err)
   })
   
 }
@@ -36,11 +38,12 @@ class LoginView extends React.Component {
   render() {
     return (
       <div>
-        <h1>Google Login Button!</h1>
+        <img src="/icons/launcher-icon-3x.png" />
+        <h1>Ashley Cho Management Suite</h1>
         <GoogleLogin
-          clientId="613853658453-4876vdq3eksqgahli1rj2n0uhptpfov9.apps.googleusercontent.com"
+          clientId={google.apiClientID}
           buttonText="GSuite Login"
-          hostedDomain="ashleycho.com"
+          hostedDomain={companyDomain}
           onSuccess={requestAuth}
           onFailure={console.log}
         />
