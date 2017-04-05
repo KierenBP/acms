@@ -10,8 +10,9 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `session` (
-  `token` int(50) unsigned NOT NULL,
-  `userid` int(11) unsigned NOT NULL,
+  `token` varchar(50) unsigned NOT NULL,
+  `userid` int(11) unsigned NOT NULL,,
+  `expires` datetime NOT NULL,
   PRIMARY KEY (`token`),
   KEY `userid` (`userid`),
   CONSTRAINT `session_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION

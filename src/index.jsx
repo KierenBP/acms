@@ -73,8 +73,8 @@ const auth = {
   signOut: () => {
     localStorage.removeItem('token');
     localStorage.removeItem('tokenExpiresIn');
-    localStorage.removeItem('firstname');
-    localStorage.removeItem('lastname');
+    localStorage.removeItem('firstName');
+    localStorage.removeItem('lastName');
     localStorage.removeItem('email');
     localStorage.removeItem('profilePicture');
   },
@@ -93,12 +93,14 @@ const auth = {
     .then((data) => {
       localStorage.token = data.token;
       localStorage.tokenExpiresIn = data.expiresIn;
-      localStorage.firstname = data.firstname;
-      localStorage.lastname = data.lastname;
+      localStorage.firstName = data.firstName;
+      localStorage.lastName = data.lastName;
       localStorage.email = data.email;
       localStorage.profilePicture = data.profilePicture;
+    }).then(() => {
+      location.reload()
     })
-    location.reload();
+    
   }
 }
 

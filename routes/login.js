@@ -59,7 +59,7 @@ function generateJWTToken(userId) {
   });
 }
 
-function createUser(res, userid, googleId, firstName, lastName, email, profilePicture) {
+function createUser(res, googleId, firstName, lastName, email, profilePicture) {
   // Create User
   db.insert({
     table: 'user',
@@ -70,8 +70,8 @@ function createUser(res, userid, googleId, firstName, lastName, email, profilePi
       email,
       profilepicture: profilePicture,
     },
-  }).then(() => {
-    generateJWTToken(userid).then((tokenJSON) => {
+  }).then((newUser) => {
+    generateJWTToken(newUser.insertId).then((tokenJSON) => {
       // return jwtToken
       core.api.returnJSON(res, {
         token: tokenJSON.token,
@@ -146,7 +146,7 @@ router.post('/tokenrequest', (req, res) => {
               updateUser(res, value[0].id, googleId, firstName, lastName, email, profilePicture);
             } else {
               // create new user, new token
-              createUser(res, value[0].id, googleId, firstName, lastName, email, profilePicture);
+              createUser(res, googleId, firstName, lastName, email, profilePicture);
             }
           });
         } else {

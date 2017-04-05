@@ -9,17 +9,19 @@ const core = {
         Auth: 'allow',
         Version: version,
         'X-Powered-By': 'A lot of coffee', // ☕️
-        'Access-Control-Allow-Origin': 'http://kieren.dev:8080',
+        'Access-Control-Allow-Origin': '*',
       });
+      console.log(data)
       res.json(data);
     },
     returnError: (res, status, error, auth) => {
       res.status(status);
+      console.warn('Error: ', error);
       res.set({
         Auth: auth.toString().toLowerCase(),
         Version: version,
         'X-Powered-By': 'A lot of crying', // 😭
-        'Access-Control-Allow-Origin': 'http://kieren.dev:8080',
+        'Access-Control-Allow-Origin': '*',
       });
       res.json({
         error,
