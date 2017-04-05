@@ -90,3 +90,6 @@ Temporary Items
 
 # Only config example is sent to repo. NOT production configs
 config.json
+
+# No builds inside source code. Must compile on the client.
+views/app.js
