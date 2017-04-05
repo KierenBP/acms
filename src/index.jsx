@@ -9,14 +9,12 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import GoogleLogin from 'react-google-login';
 
 
-import Clients from './clients/view.jsx';
+import Login from './Login.jsx';
+import Clients from './clients/View.jsx';
 
-
-
-
+// Tap event handler. Required for material-ui
 injectTapEventPlugin();
 
 
@@ -68,7 +66,7 @@ class AppDrawer extends React.Component {
   }
 }
 
-const auth = {
+export const auth = {
   isAuthenticated: localStorage.token,
   signOut: () => {
     localStorage.removeItem('token');
@@ -78,30 +76,6 @@ const auth = {
     localStorage.removeItem('email');
     localStorage.removeItem('profilePicture');
   },
-  requestAuth: (googleRes) => {
-    console.log(googleRes.tokenObj.id_token)
-    fetch('/auth/tokenrequest', {
-        method: 'POST',
-        body: JSON.stringify({
-          googleToken: googleRes.tokenObj.id_token
-        }),
-        headers: new Headers({
-          'Content-Type': 'application/json',
-        }),
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      localStorage.token = data.token;
-      localStorage.tokenExpiresIn = data.expiresIn;
-      localStorage.firstName = data.firstName;
-      localStorage.lastName = data.lastName;
-      localStorage.email = data.email;
-      localStorage.profilePicture = data.profilePicture;
-    }).then(() => {
-      location.reload()
-    })
-    
-  }
 }
 
 const PrivateRoute = ({ component }) => (
@@ -140,26 +114,6 @@ export default class App extends React.Component {
  } 
 }
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-    auth.isAuthenticated ? <Redirect to={{
-        pathname: '/'
-      }}/> : <div>
-      <h1>Google Login Button!</h1>
-      <GoogleLogin
-        clientId="613853658453-4876vdq3eksqgahli1rj2n0uhptpfov9.apps.googleusercontent.com"
-        buttonText="GSuite Login"
-        hostedDomain="ashleycho.com"
-        onSuccess={auth.requestAuth}
-        onFailure={console.log}
-      />
-    </div>)
-  }
-}
 
 
 const Dashboard = () => (
