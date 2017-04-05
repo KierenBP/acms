@@ -9,6 +9,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import Avatar from 'material-ui/Avatar';
 
 
 import Login from './Login.jsx';
@@ -16,6 +17,15 @@ import Clients from './clients/View.jsx';
 
 // Tap event handler. Required for material-ui
 injectTapEventPlugin();
+
+
+class AccountLoggedIn extends React.Component {
+  render() {
+    return (
+      <Avatar src={localStorage.profilePicture} />
+    )
+  }
+}
 
 
 class AppDrawer extends React.Component {
@@ -47,7 +57,8 @@ class AppDrawer extends React.Component {
         <div>
           <AppBar
             title="ACMS"
-            onLeftIconButtonTouchTap={this.handleToggle} />
+            onLeftIconButtonTouchTap={this.handleToggle}
+            iconElementRight={<AccountLoggedIn />} />
           <Drawer
             docked={false}
             open={this.state.open}

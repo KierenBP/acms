@@ -11,11 +11,11 @@ const core = {
         'X-Powered-By': 'A lot of coffee', // ☕️
         'Access-Control-Allow-Origin': '*',
       });
-      console.log(data)
       res.json(data);
     },
     returnError: (res, status, error, auth) => {
       res.status(status);
+      // eslint-disable-next-line
       console.warn('Error: ', error);
       res.set({
         Auth: auth.toString().toLowerCase(),
