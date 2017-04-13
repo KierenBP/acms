@@ -1,6 +1,8 @@
 import React from 'react';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
+import MenuBar from './../core/MenuBar.jsx';
+
 
 
 class ViewClientsTable extends React.Component {
@@ -34,29 +36,32 @@ class ViewClientsTable extends React.Component {
     }
     render() {
         return(
-            <Table selectable={false}>
-                <TableHeader
-                    displaySelectAll={false}
-                    enableSelectAll={false}
-                    adjustForCheckbox={false} >
-                <TableRow>
-                    <TableHeaderColumn>Name</TableHeaderColumn>
-                    <TableHeaderColumn>Phone</TableHeaderColumn>
-                    <TableHeaderColumn>Address</TableHeaderColumn>
-                </TableRow>
-                </TableHeader>
-                <TableBody
-                displayRowCheckbox={false}
-                showRowHover={true}>
-                {this.renderClients()}
-                    
+            <div>
+                <MenuBar title="Clients"/>
+                <Table selectable={false}>
+                    <TableHeader
+                        displaySelectAll={false}
+                        enableSelectAll={false}
+                        adjustForCheckbox={false} >
                     <TableRow>
-                        <TableRowColumn>1</TableRowColumn>
-                        <TableRowColumn>John Smith</TableRowColumn>
-                        <TableRowColumn>Employed</TableRowColumn>
+                        <TableHeaderColumn>Name</TableHeaderColumn>
+                        <TableHeaderColumn>Phone</TableHeaderColumn>
+                        <TableHeaderColumn>Address</TableHeaderColumn>
                     </TableRow>
-                </TableBody>
-            </Table>
+                    </TableHeader>
+                    <TableBody
+                    displayRowCheckbox={false}
+                    showRowHover={true}>
+                    {this.renderClients()}
+                        
+                        <TableRow>
+                            <TableRowColumn>1</TableRowColumn>
+                            <TableRowColumn>John Smith</TableRowColumn>
+                            <TableRowColumn>Employed</TableRowColumn>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </div>
         )
     }
 };
