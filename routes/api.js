@@ -20,7 +20,7 @@ router.use('/bingbg', (req, res) => {
 // This must be before any router requests as they will NOT be authenticated otherwise
 router.use(auth.checkHeaders);
 
-
+// Return infomation about ACMS versions and last commit. Mainly for testing that API is working
 router.get('/', (req, res) => {
   core.api.returnJSON(res, {
     info: {
@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
   });
 });
 
-
+// Client API endpoints router
 router.use('/clients', clients);
 
 
