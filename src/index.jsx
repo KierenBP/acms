@@ -2,6 +2,8 @@ import React from 'react';
 import { HashRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Login from './Login.jsx';
@@ -42,7 +44,7 @@ export default class App extends React.Component {
  render() {
    return(
     <Router>
-      <MuiThemeProvider>
+      <MuiThemeProvider  muiTheme={getMuiTheme(darkBaseTheme)}>
         <div>
           <Switch>
             <Route path="/login" component={Login}/>
@@ -62,10 +64,10 @@ export default class App extends React.Component {
 class Dashboard extends React.Component {
   render() {
     return (
-    <div>
-      <MenuBar title="Dashboard"/>
-      <h1>Testing</h1>
-    </div>
+      <div>
+        <MenuBar title="Dashboard"/>
+        <h1>Testing</h1>
+      </div>
     )
   }
 }
