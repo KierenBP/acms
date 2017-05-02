@@ -18,25 +18,53 @@ router.get('/', (req, res) => {
   // Work out amount
   const amount = (minAmount - 1) * maxAmount;
   let clients;
-  db.fetch({
-    table: 'client',
-    select: ['client.id', 'name', 'phone', 'street', 'suburb', 'town', 'postcode', 'country'],
-    limit: {
-      offset: amount,
-      amount: maxAmount,
-    },
-    join: [{
-      type: 'LEFT JOIN',
-      table: 'firstaddressview',
-      col: 'client.id',
-      value: 'clientid',
-    }, {
-      type: 'LEFT JOIN',
-      table: 'address',
-      col: 'addressid',
-      value: 'address.id',
-    }],
-  }).then((returnedClients) => {
+  let query;
+  if (req.query.q) {
+    query = {
+      table: 'client',
+      select: ['client.id', 'name', 'phone', 'street', 'suburb', 'town', 'postcode', 'country'],
+      where: [{
+        col: 'client.name',
+        value: req.query.q,
+      }],
+      limit: {
+        offset: amount,
+        amount: maxAmount,
+      },
+      join: [{
+        type: 'LEFT JOIN',
+        table: 'firstaddressview',
+        col: 'client.id',
+        value: 'clientid',
+      }, {
+        type: 'LEFT JOIN',
+        table: 'address',
+        col: 'addressid',
+        value: 'address.id',
+      }],
+    };
+  } else {
+    query = {
+      table: 'client',
+      select: ['client.id', 'name', 'phone', 'street', 'suburb', 'town', 'postcode', 'country'],
+      limit: {
+        offset: amount,
+        amount: maxAmount,
+      },
+      join: [{
+        type: 'LEFT JOIN',
+        table: 'firstaddressview',
+        col: 'client.id',
+        value: 'clientid',
+      }, {
+        type: 'LEFT JOIN',
+        table: 'address',
+        col: 'addressid',
+        value: 'address.id',
+      }],
+    };
+  }
+  db.fetch(query).then((returnedClients) => {
     clients = returnedClients;
   }).then(() => db.fetch({
     table: 'client',
